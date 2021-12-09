@@ -1,0 +1,9 @@
+---
+- name: INIT
+  hosts: localhost
+  gather_facts: yes
+  roles:
+    - hadret.restic
+
+
+
