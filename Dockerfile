@@ -42,10 +42,11 @@ RUN echo "===> Installing nodejs..." && \
     apk add nodejs npm
 
 RUN echo "===> Installing node packages..." && \
-    npm i @royalgarter/r-queue@2.2.2 -g
+    npm i @royalgarter/r-queue@2.4 -g
 
 RUN echo "===> Installing ext. tools..." && \
-    apk add curl zip
+    apk add curl zip \
+    mysql-client redis postgresql12-client
 
 RUN echo "===> Removing package list..."  && \
     apk del build-dependencies            && \
