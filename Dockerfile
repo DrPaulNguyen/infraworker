@@ -14,18 +14,18 @@ MAINTAINER William Yeh <william.pjyeh@gmail.com>
 
 
 RUN echo "===> Installing sudo to emulate normal OS behavior..."  && \
-    apk --update add sudo                
+    apk --update add sudo
 
 
 RUN echo "===> Adding Python runtime..."  && \
     apk --update add python3 py-pip openssl ca-certificates    && \
     apk --update add --virtual build-dependencies \
                 python3-dev libffi-dev openssl-dev build-base  && \
-    pip install --upgrade pip cffi                            
+    pip install --upgrade pip cffi
 
 
 RUN echo "===> Installing Ansible..."  && \
-    pip install ansible                
+    pip install ansible
 
 
 RUN echo "===> Installing handy tools (not absolutely required)..."  && \
