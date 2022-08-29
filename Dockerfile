@@ -6,8 +6,6 @@
 
 
 # pull base image
-FROM restic/restic:0.12.0 as restic
-
 FROM alpine:3.15
 
 MAINTAINER William Yeh <william.pjyeh@gmail.com>
@@ -30,27 +28,28 @@ RUN echo "===> Installing Ansible..."  && \
 
 RUN echo "===> Installing handy tools (not absolutely required)..."  && \
     pip install --upgrade pycrypto pywinrm         && \
-    apk --update add sshpass openssh-client rsync 
+    apk --update add sshpass openssh-client rsync
 
 RUN echo "===> Adding hosts for convenience..."  && \
     mkdir -p /etc/ansible                        && \
     echo 'localhost' > /etc/ansible/hosts
 
-COPY --from=restic /usr/bin/restic /usr/bin/restic
-
 RUN echo "===> Installing nodejs..." && \
     apk add nodejs npm
-
-RUN echo "===> Installing node packages..." && \
-    npm i @royalgarter/r-queue@2.4 -g
 
 RUN echo "===> Installing ext. tools..." && \
     apk add curl zip \
     mysql-client redis postgresql12-client
 
+RUN echo "===> Installing rclone..." && \
+    apk add rclone restic
+
+RUN echo "===> Installing node packages..." && \
+    npm i @royalgarter/r-queue@2.4 -g
+
 RUN echo "===> Removing package list..."  && \
     apk del build-dependencies            && \
-    rm -rf /var/cache/apk/*               
+    rm -rf /var/cache/apk/*
 
 RUN echo "===> Installing pip..." && \
     pip install jmespath
