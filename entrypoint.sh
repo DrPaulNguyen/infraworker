@@ -15,6 +15,14 @@ else
   echo "==== no crontab ===="
 fi
 
-echo "======== RUN $@ =============="
+ssh-keygen -A
 
+if [[ "$RUN_SSHD" != "" ]]; then
+  echo "==== start sshd ===="
+  exec /usr/sbin/sshd -D -e
+else
+  echo "==== no sshd ===="
+fi
+
+echo "======== RUN $@ =============="
 $@

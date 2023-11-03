@@ -39,13 +39,16 @@ RUN echo "===> Installing nodejs..." && \
 
 RUN echo "===> Installing ext. tools..." && \
     apk add curl zip \
-    mysql-client redis postgresql12-client
+    mysql-client redis postgresql12-client mongodb-tools
 
 RUN echo "===> Installing rclone..." && \
     apk add rclone restic
 
 RUN echo "===> Installing node packages..." && \
     npm i @royalgarter/r-queue@2.4 -g
+
+RUN echo "===> Installing rclone..." && \
+    apk add openssh
 
 RUN echo "===> Removing package list..."  && \
     apk del build-dependencies            && \
@@ -54,13 +57,19 @@ RUN echo "===> Removing package list..."  && \
 RUN echo "===> Installing pip..." && \
     pip install jmespath
 
+RUN sed -i \
+    's/^root:!:/root:*:/g' \
+    /etc/shadow
+
 RUN mkdir /keys
 
 WORKDIR /mnt/data
 
 COPY entrypoint.sh /
+COPY sshd_config /etc/ssh/
 
 ENTRYPOINT ["/entrypoint.sh"]
+EXPOSE 22/tcp
 
 VOLUME ["/mnt/data","/keys"]
 
